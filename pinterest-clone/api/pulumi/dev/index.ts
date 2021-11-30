@@ -2,6 +2,7 @@ import DynamoDB from "./dynamoDb";
 import Graphql from "./graphql";
 import ApiGateway from "./apiGateway";
 import Cloudfront from "./cloudfront";
+import Cognito from "./cognito";
 
 // Among other things, this determines the amount of information we reveal on runtime errors.
 // https://www.webiny.com/docs/how-to-guides/environment-variables/#debug-environment-variable
@@ -13,6 +14,7 @@ const WEBINY_LOGS_FORWARD_URL = String(process.env.WEBINY_LOGS_FORWARD_URL);
 
 export default () => {
     const dynamoDb = new DynamoDB();
+    const cognito = new Cognito();
 
     const api = new Graphql({
         dbTable: dynamoDb.table,
@@ -47,6 +49,10 @@ export default () => {
         region: process.env.AWS_REGION,
         apiUrl: cloudfront.getDistributionUrl(),
         graphqlApiUrl: cloudfront.getDistributionUrl("/graphql"),
-        dynamoDbTable: dynamoDb.table.name
+        dynamoDbTable: dynamoDb.table.name,
+        cognitoUserPool: {
+            id: cognito.userPool.id,
+            domain: cognito.getUserPoolDomain()
+        }
     };
 };

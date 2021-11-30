@@ -3,6 +3,8 @@
 	"version": "0.1.0",
 	"private": true,
 	"dependencies": {
+		"@aws-amplify/auth": "^4.3.16",
+		"@webiny/app-security": "^5.18.2",
 		"@webiny/aws-layers": "5.18.2",
 		"@webiny/cli": "5.18.2",
 		"@webiny/cli-plugin-deploy-pulumi": "5.18.2",

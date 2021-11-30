@@ -12,7 +12,14 @@ import { getStackOutput } from "@webiny/cli-plugin-deploy-pulumi/utils";
 
 const API_MAP = {
     REACT_APP_API_URL: "${apiUrl}",
-    REACT_APP_GRAPHQL_API_URL: "${apiUrl}/graphql"
+    REACT_APP_GRAPHQL_API_URL: "${apiUrl}/graphql",
+    REACT_APP_USER_POOL_REGION: "${region}",
+    REACT_APP_USER_POOL_ID: "${cognitoUserPool.id}",
+    REACT_APP_USER_POOL_DOMAIN: "${cognitoUserPool.domain}"
+};
+
+const APP_MAP = {
+    REACT_APP_USER_POOL_WEB_CLIENT_ID: "${cognitoUserPool.clientId}"
 };
 
 const NO_ENV_MESSAGE = `Please specify the environment via the "--env" argument, for example: "--env dev".`;
@@ -27,6 +34,15 @@ export default {
                     folder: "pinterest-clone/api",
                     env: options.env,
                     map: API_MAP
+                })
+            );
+            
+            Object.assign(
+                process.env,
+                getStackOutput({
+                    folder: "pinterest-clone/app",
+                    env: options.env,
+                    map: APP_MAP,
                 })
             );
 
@@ -45,6 +61,15 @@ export default {
                     folder: "pinterest-clone/api",
                     env: options.env,
                     map: API_MAP
+                })
+            );
+
+            Object.assign(
+                process.env,
+                getStackOutput({
+                    folder: "pinterest-clone/app",
+                    env: options.env,
+                    map: APP_MAP,
                 })
             );
 

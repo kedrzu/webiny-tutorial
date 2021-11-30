@@ -117,7 +117,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aws-amplify/auth@npm:4.3.16":
+"@aws-amplify/auth@npm:4.3.16, @aws-amplify/auth@npm:^4.3.16":
   version: 4.3.16
   resolution: "@aws-amplify/auth@npm:4.3.16"
   dependencies:
@@ -5855,7 +5855,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webiny/api-authentication@npm:5.18.2":
+"@webiny/api-authentication-cognito@npm:^5.18.2":
+  version: 5.18.2
+  resolution: "@webiny/api-authentication-cognito@npm:5.18.2"
+  dependencies:
+    "@webiny/api-authentication": 5.18.2
+    "@webiny/api-cognito-authenticator": 5.18.2
+    "@webiny/handler": 5.18.2
+  checksum: a36df7bcacdccb3bc645ca0f226cb95c43044d253ec44fb584f2f0ad91c4eb79bd63e589cfe2e4f2ffab603e9988a4373b040982b1750f60f05149752485c5e1
+  languageName: node
+  linkType: hard
+
+"@webiny/api-authentication@npm:5.18.2, @webiny/api-authentication@npm:^5.18.2":
   version: 5.18.2
   resolution: "@webiny/api-authentication@npm:5.18.2"
   dependencies:
@@ -6785,7 +6796,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@webiny/app-security@npm:5.18.2":
+"@webiny/app-security@npm:5.18.2, @webiny/app-security@npm:^5.18.2":
   version: 5.18.2
   resolution: "@webiny/app-security@npm:5.18.2"
   dependencies:
@@ -19321,6 +19332,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pinterest-clone-api@workspace:pinterest-clone/api/code/graphql"
   dependencies:
+    "@webiny/api-authentication": ^5.18.2
+    "@webiny/api-authentication-cognito": ^5.18.2
     "@webiny/cli": ^5.18.2
     "@webiny/cli-plugin-deploy-pulumi": ^5.18.2
     "@webiny/handler": ^5.18.2
@@ -25227,6 +25240,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "webiny-tutorial@workspace:."
   dependencies:
+    "@aws-amplify/auth": ^4.3.16
     "@babel/cli": ^7.10.4
     "@babel/core": ^7.10.4
     "@babel/plugin-proposal-class-properties": ^7.10.4
@@ -25241,6 +25255,7 @@ __metadata:
     "@types/react-dom": ^16.9.4
     "@typescript-eslint/eslint-plugin": ^4.14.1
     "@typescript-eslint/parser": ^4.14.1
+    "@webiny/app-security": ^5.18.2
     "@webiny/aws-layers": 5.18.2
     "@webiny/cli": 5.18.2
     "@webiny/cli-plugin-deploy-pulumi": 5.18.2

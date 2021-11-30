@@ -10,6 +10,7 @@ import { tagResources } from "@webiny/cli-plugin-deploy-pulumi/utils";
 
 import App from "./app";
 import Cloudfront from "./cloudfront";
+import Cognito from "./cognito";
 
 export = async () => {
     // Add tags to all resources that support tagging.
@@ -20,6 +21,12 @@ export = async () => {
 
     const app = new App();
     const cloudfront = new Cloudfront({ appS3Bucket: app.bucket });
+    const cognito = new Cognito({ cloudfront });
 
-    return { appUrl: cloudfront.getDistributionUrl() };
+    return {
+        appUrl: cloudfront.getDistributionUrl(),
+        cognitoUserPool: {
+            clientId: cognito.userPoolClient.id
+        }
+    };
 };
