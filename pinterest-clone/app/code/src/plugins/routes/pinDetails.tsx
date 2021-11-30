@@ -7,7 +7,7 @@ import gql from "graphql-tag";
 import Layout from "~/components/Layout";
 import blankImage from "~/images/blankImage.png";
 
-import './pinDetails.scss';
+import "./pinDetails.scss";
 
 // Retrieves a previously created pin by given ID.
 const GET_PIN = gql`
@@ -18,6 +18,11 @@ const GET_PIN = gql`
                 title
                 description
                 coverImage
+                createdBy {
+                    id
+                    type
+                    displayName
+                }
             }
         }
     }

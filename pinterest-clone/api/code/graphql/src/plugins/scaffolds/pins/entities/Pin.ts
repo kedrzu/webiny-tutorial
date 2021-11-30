@@ -20,6 +20,9 @@ export default new Entity<PinEntity>({
         coverImage: { type: "string" },
         createdOn: { type: "string" },
         savedOn: { type: "string" },
+        
+        // For the `Pin` entity, we can use a simple "map" type as the attribute type.
+        createdBy: { type: "map" },
 
         // Will store current version of Webiny, for example "5.9.1".
         // Might be useful in the future or while performing upgrades.

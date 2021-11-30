@@ -39,6 +39,8 @@ export default class PinsMutation extends PinsResolver {
      * @param data
      */
     async createPin({ data }: CreatePinParams) {
+        const identity = await this.getCurrentIdentity();
+
         // We use `mdbid` (https://www.npmjs.com/package/mdbid) library to generate
         // a random, unique, and sequential (sortable) ID for our new entry.
         const id = mdbid();
@@ -50,6 +52,11 @@ export default class PinsMutation extends PinsResolver {
             id,
             createdOn: new Date().toISOString(),
             savedOn: new Date().toISOString(),
+            createdBy: {
+                id: identity.id,
+                type: identity.type,
+                displayName: identity.displayName
+            },
             webinyVersion: process.env.WEBINY_VERSION
         };
 
@@ -65,10 +72,16 @@ export default class PinsMutation extends PinsResolver {
      * @param data
      */
     async updatePin({ id, data }: UpdatePinParams) {
+        const identity = await this.getCurrentIdentity();
+
         // If entry is not found, we throw an error.
         const { Item: pin } = await Pin.get({ PK: this.getPK(), SK: id });
         if (!pin) {
             throw new Error(`Pin "${id}" not found.`);
+        }
+
+        if (pin.createdBy.id !== identity.id) {
+            throw new Error("Not authorized.");
         }
 
         const updatedPin = { ...pin, ...data };
@@ -84,15 +97,31 @@ export default class PinsMutation extends PinsResolver {
      * @param id
      */
     async deletePin({ id }: DeletePinParams) {
+        const identity = await this.getCurrentIdentity();
+
         // If entry is not found, we throw an error.
         const { Item: pin } = await Pin.get({ PK: this.getPK(), SK: id });
         if (!pin) {
             throw new Error(`Pin "${id}" not found.`);
         }
 
+        if (pin.createdBy.id !== identity.id) {
+            throw new Error("Not authorized.");
+        }
+
         // Will throw an error if something goes wrong.
         await Pin.delete(pin);
 
         return pin;
+    }
+
+    private async getCurrentIdentity() {
+        const { authentication } = this.context;
+        const identity = await authentication.getIdentity();
+        if (!identity) {
+            throw new Error("Not authenticated.");
+        }
+
+        return identity;
     }
 }
