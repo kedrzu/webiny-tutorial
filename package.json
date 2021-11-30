@@ -71,7 +71,9 @@
 			"api/code/pageBuilder/exportPages/*",
 			"api/code/prerenderingService/render",
 			"api/code/prerenderingService/flush",
-			"api/code/prerenderingService/queue/*"
+			"api/code/prerenderingService/queue/*",
+			"pinterest-clone/api/code/graphql",
+			"pinterest-clone/app/code"
 		]
 	},
 	"scripts": {
@@ -87,7 +89,9 @@
 		"setup-project": "node ./scripts/setupProject.js",
 		"setup-env-files": "node ./scripts/setupEnvFiles.js",
 		"link-workspaces": "node ./scripts/linkWorkspaces.js",
-		"postinstall": "yarn link-workspaces"
+		"postinstall": "yarn link-workspaces",
+		"dev:api": "yarn webiny watch pinterest-clone/api --env dev",
+		"dev:app": "yarn webiny watch pinterest-clone/app --env dev"
 	},
 	"resolutions": {
 		"@types/react": "16.14.4",
