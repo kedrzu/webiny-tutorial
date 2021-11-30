@@ -16,7 +16,8 @@
 		"@webiny/cli-plugin-scaffold-react-component": "5.18.2",
 		"@webiny/cli-plugin-workspaces": "5.18.2",
 		"@webiny/cwp-template-aws": "5.18.2",
-		"@webiny/project-utils": "5.18.2"
+		"@webiny/project-utils": "5.18.2",
+		"antd": "^4.17.2"
 	},
 	"keywords": [
 		"aws+dynamodb"

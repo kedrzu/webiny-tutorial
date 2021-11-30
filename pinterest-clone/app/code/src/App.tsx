@@ -6,6 +6,7 @@ import { createApolloClient } from "./apollo";
 
 // An entrypoint for all SCSS styles your application might have.
 import "./App.scss";
+import "antd/dist/antd.css";
 
 // The beginning of our React application, where we mount a couple of useful providers.
 // If needed, feel free to add new or modify existing providers.

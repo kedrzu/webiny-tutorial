@@ -25,10 +25,6 @@ interface ListPinsResponse {
     meta: { limit: number; after: string; before: string };
 }
 
-interface PinsQuery {
-    getPin(params: GetPinParams): Promise<PinEntity>;
-    listPins(params: ListPinsParams): Promise<ListPinsResponse>;
-}
 
 /**
  * To define our GraphQL resolvers, we are using the "class method resolvers" approach.
@@ -39,7 +35,7 @@ export default class PinsQuery extends PinsResolver implements PinsQuery {
      * Returns a single Pin entry from the database.
      * @param id
      */
-    async getPin({ id }: GetPinParams) {
+    async getPin({ id }: GetPinParams): Promise<PinEntity> {
         // Query the database and return the entry. If entry was not found, an error is thrown.
         const { Item: pin } = await Pin.get({ PK: this.getPK(), SK: id });
         if (!pin) {
@@ -57,7 +53,7 @@ export default class PinsQuery extends PinsResolver implements PinsQuery {
      * @param after
      * @param before
      */
-    async listPins({ limit = 10, sort, after, before }: ListPinsParams) {
+    async listPins({ limit = 10, sort, after, before }: ListPinsParams) : Promise<ListPinsResponse> {
         const PK = this.getPK();
         const query = { limit, reverse: sort !== "createdOn_ASC", gt: undefined, lt: undefined };
         const meta = { limit, after: null, before: null };

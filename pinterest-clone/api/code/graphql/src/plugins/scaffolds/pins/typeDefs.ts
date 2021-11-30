@@ -1,3 +1,5 @@
+import gql from 'graphql-tag';
+
 export default /* GraphQL */ `
     type Pin {
         id: ID!

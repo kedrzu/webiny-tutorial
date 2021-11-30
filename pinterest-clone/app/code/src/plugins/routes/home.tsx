@@ -1,63 +1,54 @@
 import React from "react";
 import { RoutePlugin } from "@webiny/app/plugins/RoutePlugin";
-import { Route } from "@webiny/react-router";
-import { ReactComponent as WebinyLogo } from "~/images/webiny.svg";
+import { Link, Route } from "@webiny/react-router";
+import { Empty } from "antd";
+import { useQuery } from "@apollo/react-hooks";
+import gql from "graphql-tag";
+import Columned from "react-columned";
 import Layout from "~/components/Layout";
-import UsefulLink from "./home/UsefulLink";
-import UsefulLinks from "./home/UsefulLinks";
+import blankImage from "~/images/blankImage.png";
+
+import './home.scss';
+
+const LIST_PINS = gql`
+    query ListPins($sort: PinsListSort, $limit: Int, $after: String, $before: String) {
+        pins {
+            listPins(sort: $sort, limit: $limit, after: $after, before: $before) {
+                data {
+                    id
+                    title
+                }
+            }
+        }
+    }
+`;
 
 // The home page.
 function Home() {
+    const listPinsQuery = useQuery(LIST_PINS, { variables: { limit: 100 } });
+    const { data = [] } = listPinsQuery?.data?.pins?.listPins || {};
+
     return (
         <Layout className={"home"}>
-            <a href={"https://www.webiny.com"} target="_blank" rel={"noreferrer"}>
-                <WebinyLogo className={"logo"} />
-            </a>
-            <h1>Welcome!</h1>
-            <h2>Welcome to your new React application!</h2>
-            <div>Here are some useful links for you &#8595;</div>
-            <UsefulLinks>
-                <UsefulLink
-                    url={"/docs/tutorials/create-custom-application/introduction"}
-                    title={"Create Custom Application Tutorial"}
-                >
-                    Learn how to create a completely custom application that&apos;s interacting with
-                    a standalone GraphQL API.
-                </UsefulLink>
-                <UsefulLink
-                    url={"/docs/how-to-guides/scaffolding/react-application"}
-                    title={"React Application Scaffold"}
-                >
-                    Learn more about the React Application scaffold that was used to create this
-                    React application.
-                </UsefulLink>
-                <UsefulLink
-                    url={"/docs/how-to-guides/environment-variables"}
-                    title={"Environment Variables"}
-                >
-                    Learn what are environment variables and how you can assign them.
-                </UsefulLink>
-                <UsefulLink
-                    url={"/docs/how-to-guides/deployment/deploy-your-project"}
-                    title={"Deploy Your React Application"}
-                >
-                    Learn how to deploy your Webiny project and its project applications, using the
-                    Webiny CLI.
-                </UsefulLink>
-                <UsefulLink
-                    url={"/docs/how-to-guides/use-watch-command"}
-                    title={"Use the Watch Command"}
-                >
-                    Learn how to continuously rebuild and redeploy your code using the{" "}
-                    <code>webiny watch</code> command.
-                </UsefulLink>
-                <UsefulLink
-                    url={"/docs/how-to-guides/deployment/connect-custom-domain"}
-                    title={"Connect Custom Domain"}
-                >
-                    Learn how to link an existing domain with your new React application.
-                </UsefulLink>
-            </UsefulLinks>
+            {data.length > 0 ? (
+                /* If we have pins to show, use the `Columned` component to render them in a mosaic layout. */
+                <Columned>
+                    {data.map(item => (
+                        /* Every pin should link to its details page. */
+                        <Link key={item.id} to={"/pins/" + item.id}>
+                            {/* If the pin contains an image, we show it. Otherwise, we show a placeholder image. */}
+                            <img
+                                title={item.title}
+                                alt={item.title}
+                                src={item.coverImage || blankImage}
+                            />
+                        </Link>
+                    ))}
+                </Columned>
+            ) : (
+                /* If there are no pins to show, render "Nothing to show." message. */
+                <Empty description={"Nothing to show."} />
+            )}
         </Layout>
     );
 }
